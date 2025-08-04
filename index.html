@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alarm Clock App</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1 class="fade-in">Alarm Clock</h1>
+    <div id="clock" class="glass glow">00:00:00</div>
+
+    <div class="alarm-set glass slide-in">
+      <input type="time" id="alarmTime">
+      <button onclick="setAlarm()">Set Alarm</button>
+    </div>
+
+    <div class="toggle-wrapper glass fade-in">
+      <span>12-Hour</span>
+      <label class="switch">
+        <input type="checkbox" id="toggleFormat" onchange="toggleTimeFormat()">
+        <span class="slider round"></span>
+      </label>
+      <span>24-Hour</span>
+    </div>
+
+    <div class="tone-selector glass slide-in">
+      <label for="tone">Select Alarm Tone:</label>
+      <select id="tone" onchange="changeTone()">
+        <option value="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg">Default</option>
+        <option value="https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg">Digital Watch</option>
+        <option value="https://actions.google.com/sounds/v1/alarms/beep_short.ogg">Beep Short</option>
+      </select>
+      <input type="file" id="customTone" accept="audio/*" onchange="uploadCustomTone()">
+    </div>
+
+    <h3 class="fade-in">Active Alarms</h3>
+    <ul id="alarmList"></ul>
+
+    <audio id="alarmSound" preload="auto"></audio>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
