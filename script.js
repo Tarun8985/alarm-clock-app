@@ -21,15 +21,11 @@ function checkAlarms(currentTime) {
       alarm.rang = true;
       saveAlarms();
 
-      setTimeout(() => {
-        if (confirm("Alarm ringing: " + alarm.time + "\nSnooze for 5 minutes?")) {
-          snoozeAlarm(index);
-        }
-      }, 1000); // Delay prompt to ensure audio starts playing
+      
+      showAlarmModal(alarm.time, index);
     }
   });
 }
-
 function changeTone() {
   currentTone = document.getElementById("tone").value;
 }
@@ -45,17 +41,53 @@ function uploadCustomTone() {
     reader.readAsDataURL(file);
   }
 }
+let currentRingingIndex = null;
+
+function showAlarmModal(time, index) {
+  currentRingingIndex = index;
+  document.getElementById("modalTimeText").textContent = `Alarm ringing at ${time}`;
+  document.getElementById("alarmModal").style.display = "flex";
+}
+
+function handleSnooze() {
+  if (currentRingingIndex !== null) {
+    snoozeAlarm(currentRingingIndex);
+    currentRingingIndex = null;
+  }
+  closeModal();
+}
+
+function dismissAlarm() {
+  alarmAudio.pause();
+  alarmAudio.currentTime = 0;
+  currentRingingIndex = null;
+  closeModal();
+}
+
+function closeModal() {
+  document.getElementById("alarmModal").style.display = "none";
+}
 
 function snoozeAlarm(index) {
+  alarmAudio.pause(); 
+  alarmAudio.currentTime = 0;
+
   const alarm = alarms[index];
-  const [h, m, s] = alarm.time.split(":" ).map(Number);
+  const [h, m, s] = alarm.time.split(":").map(Number);
   const date = new Date();
   date.setHours(h, m, s);
   date.setMinutes(date.getMinutes() + 5);
+
   const newTime = date.toTimeString().split(" ")[0];
+
+
+  alarms[index].rang = true;
+
+
   alarms.push({ time: newTime, enabled: true, rang: false });
-  renderAlarms();
+
   saveAlarms();
+  renderAlarms();
 }
 
 function renderAlarms() {

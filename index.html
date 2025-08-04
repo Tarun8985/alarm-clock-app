@@ -40,6 +40,13 @@
 
     <audio id="alarmSound" preload="auto"></audio>
   </div>
+  <div id="alarmModal" class="modal">
+  <div class="modal-content">
+    <p id="modalTimeText">Alarm ringing!</p>
+    <button onclick="handleSnooze()">Snooze 5 min</button>
+    <button onclick="dismissAlarm()">Dismiss</button>
+  </div>
+</div>
   <script src="script.js"></script>
 </body>
 </html>
